@@ -100,7 +100,10 @@ class MemoryStore:
             if status == "all":
                 rows = db.execute("SELECT * FROM tasks ORDER BY id DESC LIMIT ?", (max(1, min(limit, 500)),)).fetchall()
             else:
-                rows = db.execute("SELECT * FROM tasks WHERE status = ? ORDER BY id DESC LIMIT ?", (status, max(1, min(limit, 500))).fetchall()
+                rows = db.execute(
+                    "SELECT * FROM tasks WHERE status = ? ORDER BY id DESC LIMIT ?",
+                    (status, max(1, min(limit, 500))),
+                ).fetchall()
         return [dict(row) for row in rows]
 
     def complete_task(self, task_id: int) -> bool:
