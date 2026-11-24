@@ -1,8 +1,0 @@
-{
-  "version": 1,
-  "exclude": [".git/**", ".venv/**", "venv/**", "__pycache__/**", ".nova-reports/**", "node_modules/**", "dist/**", "build/**", ".pytest_cache/**"],
-  "include_extensions": [".py", ".js", ".jsx", ".ts", ".tsx", ".java", ".go", ".rb", ".php", ".sh", ".yml", ".yaml", ".json", ".toml", ".env", ".properties", ".xml", ".md"],
-  "max_file_bytes": 1048576,
-  "rules": {"NOVA001": true, "NOVA002": true, "NOVA003": true, "NOVA004": true, "NOVA005": true, "NOVA006": true, "NOVA007": true},
-  "ignore_fingerprints": []
-}

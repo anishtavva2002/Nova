@@ -1,5 +1,11 @@
-.venv/
 __pycache__/
-.pytest_cache/
+*.py[cod]
 *.egg-info/
-.nova-reports/
+.pytest_cache/
+.venv/
+venv/
+.env
+.nova/
+*.db
+dist/
+build/
