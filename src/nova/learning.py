@@ -1,12 +1,17 @@
+from nova.intent import IntentParser
 from nova.memory import MemoryStore
 
+
 class LearningEngine:
-    """Only explicit user-approved corrections are retained; code is never self-modified."""
+    """User-approved aliases to a fixed allowlist; no self-modifying code."""
     def __init__(self, memory: MemoryStore) -> None:
         self.memory = memory
 
-    def approve_intent_correction(self, phrase: str, intent_name: str) -> None:
-        self.memory.approve_correction(phrase, intent_name)
+    def approve_alias(self, phrase: str, target: str) -> None:
+        clean_target = target.casefold().strip()
+        if clean_target not in IntentParser.LEARNABLE:
+            raise ValueError(f"Target must be one of: {', '.join(sorted(IntentParser.LEARNABLE))}")
+        self.memory.save_alias(phrase, clean_target)
 
-    def rules(self) -> dict[str, str]:
-        return self.memory.get_corrections()
+    def aliases(self) -> dict[str, str]:
+        return self.memory.get_aliases()

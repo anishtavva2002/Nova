@@ -1,5 +1,6 @@
 from nova.skills.base import Skill
 
+
 class SkillRegistry:
     def __init__(self) -> None:
         self._skills: dict[str, Skill] = {}

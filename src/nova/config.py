@@ -2,9 +2,11 @@ import os
 from dataclasses import dataclass
 from pathlib import Path
 
+
 @dataclass(frozen=True)
 class NovaConfig:
     home: Path
+    timezone_name: str | None = None
 
     @property
     def database_path(self) -> Path:
@@ -15,4 +17,4 @@ class NovaConfig:
         configured = os.environ.get("NOVA_HOME")
         home = Path(configured).expanduser() if configured else Path.home() / ".nova"
         home.mkdir(parents=True, exist_ok=True)
-        return cls(home)
+        return cls(home=home, timezone_name=os.environ.get("NOVA_TIMEZONE"))
