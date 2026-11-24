@@ -1,0 +1,23 @@
+name: Nova Guardian
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  nova:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Run Nova
+        uses: ./github-action
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nova-reports
+          path: .nova-reports/
+          if-no-files-found: warn
