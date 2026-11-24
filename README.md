@@ -1,59 +1,58 @@
-# Nova v1.0
+# Nova v1.1 — Unified Local Assistant
 
-A local-first, LLM-free personal assistant built in Python. No LLM, cloud account, or network connection is required for core features.
+Nova is a local-first, deterministic assistant with three connected domains: personal productivity, operating-environment awareness and developer project inspection. The core requires no LLM, cloud account or network connection.
 
-## Features
-- Interactive text CLI and deterministic intent parser with natural phrase variants.
-- Local SQLite memory for notes, tasks, approved aliases, and audit history.
-- User-approved learning: teach a phrase to map to a fixed supported intent.
-- Skills for time/date, notes, tasks, safe arithmetic, and validated URL opening.
-- Permission checks and confirmation before deleting notes or opening external links.
-- Restricted AST calculator; no eval or exec.
-- Optional offline speech recognition through Vosk and sounddevice.
-- No arbitrary shell execution or autonomous code modification.
+## Current capabilities
 
-## Requirements
-Python 3.11+. Optional voice requires the voice extras and a local Vosk model.
+**Personal**
+- SQLite notes, tasks, approved aliases and audit history.
+- Time/date, safe arithmetic, notes, tasks and confirmation-gated URL opening/deletion.
+- Optional offline speech recognition through Vosk.
 
-## Windows installation
-    git clone https://github.com/anishtavva2002/Nova.git
-    cd Nova
-    py -3.11 -m venv .venv
-    .\.venv\Scripts\Activate.ps1
-    python -m pip install --upgrade pip
-    python -m pip install -e ".[dev]"
-    nova
+**Environment**
+- Read-only OS/runtime information.
+- Bounded directory listing and filename search.
 
-Alternatively run: python -m nova
+**Developer**
+- Read-only project inventory, file-extension summary and Git status.
+- Project code is never executed or modified by inspection.
 
-## Example commands
-- help
-- what time is it
-- what is today's date
-- remember My Nova project is local-first
-- show my notes
-- search notes for Nova
-- delete note 1 (confirmation required)
-- add task Finish Nova v1 tests
-- show my tasks
-- complete task 1
-- calculate (12 * 8) + 4
-- teach "launch nova" as help
-- open https://github.com/anishtavva2002/Nova (confirmation required)
-- exit
+## Install on Windows
 
-## Optional offline voice
-Install with python -m pip install -e ".[voice]". Download a Vosk model from https://alphacephei.com/vosk/models, extract it, set NOVA_VOSK_MODEL to that directory, then run nova --voice. Microphone capture only occurs while voice mode is active. Speech output remains text in this release.
+```powershell
+git clone https://github.com/anishtavva2002/Nova.git
+cd Nova
+py -3.11 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install -e ".[dev]"
+```
 
-## Local data
-SQLite database: ~/.nova/nova.db by default. Set NOVA_HOME to use another directory. Notes, tasks, aliases, and audit events remain on the local machine.
+Run the original personal assistant with `nova`, or the unified router with:
 
-## Safety
-Skills declare permissions. External URL opening and note deletion require explicit confirmation. URLs must use HTTP or HTTPS and cannot contain embedded credentials. Arithmetic accepts only numeric constants and approved arithmetic operators. User phrases are data, never code. Learning is restricted to a small allowlist of parameter-free intents.
+```powershell
+nova --unified
+```
 
-## Architecture
-Interface -> deterministic intent parser -> policy gate -> skill registry -> SQLite memory.
-Optional offline voice feeds transcripts into the same command path.
+Run tests:
 
-## Development
-Run tests with python -m pytest. See docs/ARCHITECTURE.md, docs/COMMANDS.md, and docs/ROADMAP.md.
+```powershell
+python -m pytest
+```
+
+## Unified commands
+
+- `system status`
+- `list files .`
+- `find files *.py in .`
+- `inspect project .`
+
+All original personal commands remain available in unified mode. See [docs/UNIFIED_CORE.md](docs/UNIFIED_CORE.md), [architecture](docs/ARCHITECTURE.md), [commands](docs/COMMANDS.md) and [roadmap](docs/ROADMAP.md).
+
+## Architecture and safety
+
+`Interface -> deterministic planner -> typed plan -> permission policy -> executor -> structured report`
+
+Unknown commands are delegated to the existing personal assistant. Read operations are bounded. No LLM, arbitrary shell execution, autonomous code edits, background monitoring or network actions are enabled. Higher-risk capabilities require dedicated adapters, explicit permission and tests before they are added.
+
+Aegis remains a separate security/isolation project; future integration will use a narrow adapter contract.

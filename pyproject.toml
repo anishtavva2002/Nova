@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "nova-assistant"
-version = "1.0.0"
-description = "A local-first, LLM-free personal assistant"
+version = "1.1.0"
+description = "A local-first, LLM-free unified personal, environment and developer assistant"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
